@@ -41,7 +41,7 @@ export default function MessageBubble({ message }: { message: MessageProps }) {
       {/* The "Transformed from" context tag */}
       {message.originalText && (
         <p className="text-[10px] text-slate-500/80 mt-1.5 max-w-[70%] italic px-2">
-          ✨ Transformed from: "{message.originalText}"
+          ✨ Transformed from: &quot;{message.originalText}&quot;
         </p>
       )}
     </div>
