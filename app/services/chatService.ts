@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { supabase } from "../config/supabase";
-import { MessageProps } from "../components/MessageBubble";
 import { ModeId } from "../config/modes";
 
 // NOTE: This service is currently deprecated in favor of the `useChat` hook.

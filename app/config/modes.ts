@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Heart, Sparkles, Feather, EyeOff, Target, Camera } from "lucide-react";
 
 export type ModeId =
