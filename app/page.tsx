@@ -53,13 +53,13 @@ export default function OnlyUsApp() {
 
   // Main Chat Interface
   return (
-    <div className="min-h-screen flex flex-col relative overflow-hidden bg-[#0a0a0c]">
+    <div className="fixed inset-0 flex flex-col overflow-hidden bg-[#FAFAF9]">
       {/* Ambient Chat Backgrounds */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-pink-500/10 blur-[120px] rounded-full mix-blend-screen pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full mix-blend-screen pointer-events-none" />
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-rose-200/30 blur-[120px] rounded-full mix-blend-multiply pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-orange-200/30 blur-[120px] rounded-full mix-blend-multiply pointer-events-none" />
 
       {/* Header */}
-      <header className="p-4 md:p-6 border-b border-white/5 bg-white/[0.02] backdrop-blur-xl z-20 flex justify-between items-center sticky top-0">
+      <header className="p-4 md:p-6 border-b border-stone-200 bg-white/60 backdrop-blur-xl z-20 flex justify-between items-center shadow-sm shrink-0">
         {/* Partner Info */}
         <div className="flex items-center gap-3">
           {partnerProfile ? (
@@ -68,18 +68,18 @@ export default function OnlyUsApp() {
                 <img
                   src={partnerProfile.avatar_url}
                   alt="Partner"
-                  className="w-10 h-10 rounded-full border border-pink-500/50 shadow-[0_0_15px_rgba(236,72,153,0.3)] object-cover"
+                  className="w-10 h-10 rounded-full border border-rose-200 shadow-sm object-cover"
                 />
               ) : (
-                <div className="w-10 h-10 rounded-full bg-pink-500/20 text-pink-200 flex items-center justify-center font-playfair italic border border-pink-500/50 shadow-[0_0_15px_rgba(236,72,153,0.3)]">
+                <div className="w-10 h-10 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center font-playfair italic border border-rose-200 shadow-sm">
                   {partnerProfile.full_name?.charAt(0)}
                 </div>
               )}
               <div className="hidden sm:block">
-                <p className="text-sm font-medium text-white">
+                <p className="text-sm font-medium text-stone-800">
                   {partnerProfile.full_name}
                 </p>
-                <p className="text-xs text-pink-400">Partner</p>
+                <p className="text-xs text-rose-500 font-medium">Partner</p>
               </div>
             </>
           ) : (
@@ -87,7 +87,7 @@ export default function OnlyUsApp() {
           )}
         </div>
 
-        <h1 className="text-center text-2xl font-playfair italic tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-pink-200 to-indigo-200 absolute left-1/2 -translate-x-1/2">
+        <h1 className="text-center text-2xl font-playfair italic tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-rose-500 to-orange-400 absolute left-1/2 -translate-x-1/2 font-semibold">
           Only Us
         </h1>
 
@@ -95,19 +95,19 @@ export default function OnlyUsApp() {
         <div className="flex items-center gap-3 md:gap-4">
           <div className="items-center gap-2 text-right hidden lg:flex mr-2">
             <div>
-              <p className="text-sm font-medium text-white">
+              <p className="text-sm font-medium text-stone-800">
                 {profile?.full_name}
               </p>
-              <p className="text-xs text-slate-400">You</p>
+              <p className="text-xs text-stone-500">You</p>
             </div>
             {profile?.avatar_url ? (
               <img
                 src={profile.avatar_url}
                 alt="You"
-                className="w-10 h-10 rounded-full border border-white/20 object-cover"
+                className="w-10 h-10 rounded-full border border-stone-200 object-cover shadow-sm"
               />
             ) : (
-              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center font-playfair italic border border-white/20">
+              <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center font-playfair italic border border-stone-200 text-stone-600">
                 {profile?.full_name?.charAt(0)}
               </div>
             )}
@@ -115,13 +115,13 @@ export default function OnlyUsApp() {
 
           <button
             onClick={disconnectPartner}
-            className="text-slate-500 hover:text-red-400 transition-colors p-2"
+            className="text-stone-400 hover:text-rose-500 transition-colors p-2"
             title="Disconnect Partner">
             <Unlink size={18} />
           </button>
           <button
             onClick={signOut}
-            className="text-slate-500 hover:text-white transition-colors p-2"
+            className="text-stone-400 hover:text-stone-800 transition-colors p-2"
             title="Sign Out">
             <LogOut size={18} />
           </button>
@@ -129,14 +129,14 @@ export default function OnlyUsApp() {
       </header>
 
       {/* Chat Area */}
-      <main className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 pb-40 z-10 scroll-smooth">
+      <main className="flex-1 overflow-y-auto min-h-0 p-4 md:p-8 space-y-6 pb-40 z-10 scroll-smooth">
         {messages.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="h-full flex flex-col items-center justify-center text-slate-500 italic font-playfair space-y-4 opacity-60">
-            <Heart size={40} className="text-pink-500/50" />
+            className="h-full flex flex-col items-center justify-center text-stone-400 italic font-playfair space-y-4 opacity-80">
+            <Heart size={40} className="text-rose-200/60" fill="currentColor" />
             <p className="text-lg">It&apos;s just us here. Say hello...</p>
           </motion.div>
         ) : (
@@ -146,7 +146,7 @@ export default function OnlyUsApp() {
       </main>
 
       {/* Input Area */}
-      <div className="absolute bottom-0 w-full p-4 md:p-8 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/90 to-transparent z-20 pointer-events-none">
+      <div className="absolute bottom-0 w-full p-4 md:p-8 bg-gradient-to-t from-[#FAFAF9] via-[#FAFAF9]/90 to-transparent z-20 pointer-events-none">
         <div className="max-w-3xl mx-auto pointer-events-auto">
           <ModeSelector
             show={showModes}
@@ -157,10 +157,10 @@ export default function OnlyUsApp() {
             }}
           />
 
-          <div className="flex items-center gap-3 p-2 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] transition-all duration-500 focus-within:bg-white/10 focus-within:border-white/20 focus-within:shadow-[0_8px_32px_rgba(236,72,153,0.1)]">
+          <div className="flex items-center gap-3 p-2 rounded-3xl bg-white border border-stone-200 shadow-md transition-all duration-300 focus-within:ring-2 focus-within:ring-rose-200 focus-within:border-rose-300">
             <button
               onClick={() => setShowModes(!showModes)}
-              className={`p-3 rounded-2xl transition-all duration-300 ${activeMode.bg} text-[#0a0a0c] hover:scale-105 active:scale-95 shadow-lg`}>
+              className={`p-3 rounded-2xl transition-all duration-300 ${activeMode.bg} text-white hover:scale-105 active:scale-95 shadow-sm`}>
               <activeMode.icon size={20} strokeWidth={2.5} />
             </button>
 
@@ -170,12 +170,12 @@ export default function OnlyUsApp() {
               onChange={(e) => setInputText(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
               placeholder={`Type a ${activeMode.name.toLowerCase()}...`}
-              className="flex-1 bg-transparent border-none outline-none text-sm md:text-base placeholder:text-slate-500 text-slate-200 px-2"
+              className="flex-1 bg-transparent border-none outline-none text-sm md:text-base placeholder:text-stone-400 text-stone-800 px-2"
             />
 
             <button
               onClick={sendMessage}
-              className="p-3 mr-1 rounded-2xl text-slate-400 hover:text-white hover:bg-white/10 transition-all duration-300 active:scale-95">
+              className="p-3 mr-1 rounded-2xl text-stone-400 hover:text-rose-500 hover:bg-rose-50 transition-all duration-300 active:scale-95">
               <Send size={20} />
             </button>
           </div>

@@ -21,18 +21,18 @@ export default function MessageBubble({ message }: { message: MessageProps }) {
         initial={{ opacity: 0, y: 10, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ type: "spring", stiffness: 250, damping: 20 }}
-        className={`max-w-[85%] rounded-3xl p-4 md:px-6 shadow-xl backdrop-blur-md border transition-colors
+        className={`max-w-[85%] rounded-3xl p-4 md:px-6 shadow-sm border transition-colors
           ${
             isMe
-              ? "bg-gradient-to-br from-pink-500/15 to-purple-500/15 border-pink-500/20 rounded-br-sm text-pink-50"
-              : "bg-gradient-to-br from-white/10 to-white/5 border-white/10 rounded-bl-sm text-slate-200"
+              ? "bg-gradient-to-br from-rose-100 to-orange-50 border-rose-200 rounded-br-sm text-stone-800"
+              : "bg-white border-stone-200 rounded-bl-sm text-stone-800"
           }
         `}>
         {message.mode === "mystery" ? (
           <MysteryText text={message.text} />
         ) : (
           <p
-            className={`${message.mode === "poetry" ? "font-playfair italic text-lg" : "font-inter text-sm"}`}>
+            className={`${message.mode === "poetry" ? "font-playfair italic text-lg text-stone-700" : "font-inter text-sm"}`}>
             {message.text}
           </p>
         )}
@@ -40,7 +40,7 @@ export default function MessageBubble({ message }: { message: MessageProps }) {
 
       {/* The "Transformed from" context tag */}
       {message.originalText && (
-        <p className="text-[10px] text-slate-500/80 mt-1.5 max-w-[70%] italic px-2">
+        <p className="text-[10px] text-stone-500/80 mt-1.5 max-w-[70%] italic px-2">
           ✨ Transformed from: &quot;{message.originalText}&quot;
         </p>
       )}
@@ -63,7 +63,7 @@ function MysteryText({ text }: { text: string }) {
   }, [text]);
 
   return (
-    <p className="font-mono text-indigo-200">
+    <p className="font-mono text-rose-600/90 font-medium tracking-wide">
       {revealed}
       <span className="animate-pulse">|</span>
     </p>
