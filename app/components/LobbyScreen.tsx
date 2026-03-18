@@ -2,13 +2,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { Unlink } from "lucide-react";
 
 interface LobbyScreenProps {
   user: any;
   profile: any;
   myPairingCode: string | null;
   pairWithPartner: (code: string) => Promise<void>;
+  unpairedAlert?: boolean;
+  setUnpairedAlert?: (val: boolean) => void;
 }
 
 export function LobbyScreen({
@@ -16,6 +19,8 @@ export function LobbyScreen({
   profile,
   myPairingCode,
   pairWithPartner,
+  unpairedAlert,
+  setUnpairedAlert,
 }: LobbyScreenProps) {
   const [partnerCodeInput, setPartnerCodeInput] = useState("");
   const [isPairing, setIsPairing] = useState(false);
@@ -112,6 +117,38 @@ export function LobbyScreen({
           </div>
         </div>
       </motion.div>
+
+      <AnimatePresence>
+        {unpairedAlert && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-stone-900/40 backdrop-blur-sm p-4">
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              className="bg-white rounded-3xl p-6 md:p-8 max-w-sm w-full shadow-2xl text-center space-y-4 relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-rose-400 to-orange-400" />
+              <div className="w-16 h-16 mx-auto bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mb-2 shadow-inner border border-rose-100">
+                <Unlink size={28} strokeWidth={2.5} />
+              </div>
+              <h3 className="text-2xl font-playfair italic text-stone-800">
+                Disconnected
+              </h3>
+              <p className="text-stone-500 text-sm pb-2">
+                Your partner has unpaired from this chat. You are now back in the lobby.
+              </p>
+              <button
+                onClick={() => setUnpairedAlert?.(false)}
+                className="w-full py-3.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl font-medium transition-colors active:scale-95 duration-200">
+                Okay
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -27,14 +27,21 @@ export default function OnlyUsApp() {
     myPairingCode,
     pairWithPartner,
     disconnectPartner,
+    unpairedAlert,
+    setUnpairedAlert,
   } = useChat();
 
   const [showModes, setShowModes] = useState(false);
-  const chatEndRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLElement>(null);
 
   // Auto-scroll to the bottom when new messages arrive
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [messages]);
 
   // View States
@@ -47,19 +54,21 @@ export default function OnlyUsApp() {
         profile={profile}
         myPairingCode={myPairingCode}
         pairWithPartner={pairWithPartner}
+        unpairedAlert={unpairedAlert}
+        setUnpairedAlert={setUnpairedAlert}
       />
     );
   }
 
   // Main Chat Interface
   return (
-    <div className="fixed inset-0 flex flex-col overflow-hidden bg-[#FAFAF9]">
+    <div className="fixed inset-0 flex flex-col bg-[#FAFAF9] overflow-hidden">
       {/* Ambient Chat Backgrounds */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-rose-200/30 blur-[120px] rounded-full mix-blend-multiply pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-orange-200/30 blur-[120px] rounded-full mix-blend-multiply pointer-events-none" />
 
       {/* Header */}
-      <header className="p-4 md:p-6 border-b border-stone-200 bg-white/60 backdrop-blur-xl z-20 flex justify-between items-center shadow-sm shrink-0">
+      <header className="p-4 md:px-8 md:py-4 border-b border-stone-200 bg-white/80 backdrop-blur-xl z-20 flex justify-between items-center shadow-sm shrink-0">
         {/* Partner Info */}
         <div className="flex items-center gap-3">
           {partnerProfile ? (
@@ -129,7 +138,7 @@ export default function OnlyUsApp() {
       </header>
 
       {/* Chat Area */}
-      <main className="flex-1 overflow-y-auto min-h-0 p-4 md:p-8 space-y-6 pb-40 z-10 scroll-smooth">
+      <main ref={scrollRef} className="flex-1 overflow-y-auto min-h-0 p-4 md:p-8 space-y-6 pb-4 z-10 scroll-smooth">
         {messages.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
@@ -142,12 +151,11 @@ export default function OnlyUsApp() {
         ) : (
           messages.map((msg) => <MessageBubble key={msg.id} message={msg} />)
         )}
-        <div ref={chatEndRef} />
       </main>
 
       {/* Input Area */}
-      <div className="absolute bottom-0 w-full p-4 md:p-8 bg-gradient-to-t from-[#FAFAF9] via-[#FAFAF9]/90 to-transparent z-20 pointer-events-none">
-        <div className="max-w-3xl mx-auto pointer-events-auto">
+      <div className="shrink-0 w-full p-4 md:px-8 md:pb-6 md:pt-4 bg-white/60 backdrop-blur-lg border-t border-stone-200 z-20">
+        <div className="max-w-3xl mx-auto">
           <ModeSelector
             show={showModes}
             activeMode={activeMode}
