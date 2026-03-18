@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ModeId } from "../config/modes";
+import { Check, CheckCheck } from "lucide-react";
 
 export interface MessageProps {
   id: string | number;
@@ -10,6 +11,8 @@ export interface MessageProps {
   originalText?: string | null;
   sender: "me" | "partner";
   mode: ModeId;
+  is_read?: boolean;
+  is_delivered?: boolean;
 }
 
 export default function MessageBubble({ message }: { message: MessageProps }) {
@@ -35,6 +38,19 @@ export default function MessageBubble({ message }: { message: MessageProps }) {
             className={`${message.mode === "poetry" ? "font-playfair italic text-lg text-stone-700" : "font-inter text-sm"}`}>
             {message.text}
           </p>
+        )}
+
+        {/* Read Receipt */}
+        {isMe && (
+          <div className="flex justify-end items-center mt-1 -mb-1 opacity-80">
+            {message.is_read ? (
+              <CheckCheck size={14} className="text-rose-500" strokeWidth={2.5} />
+            ) : message.is_delivered ? (
+              <CheckCheck size={14} className="text-stone-400" strokeWidth={2.5} />
+            ) : (
+              <Check size={14} className="text-stone-400" strokeWidth={2.5} />
+            )}
+          </div>
         )}
       </motion.div>
 
