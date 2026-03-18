@@ -1,14 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { signInWithGoogle } from "../services/authService";
+import { supabase } from "../config/supabase";
 
 export function LoginScreen() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#0a0a0c] text-slate-200 p-4 relative overflow-hidden">
-      {/* Ambient Background Glows */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-pink-500/20 blur-[120px] rounded-full mix-blend-screen pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-indigo-500/20 blur-[120px] rounded-full mix-blend-screen pointer-events-none" />
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#FAFAF9] text-stone-800 p-4 relative overflow-hidden">
+      {/* Ambient Warm Glows */}
+      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-rose-200/40 blur-[120px] rounded-full mix-blend-multiply pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-orange-200/40 blur-[120px] rounded-full mix-blend-multiply pointer-events-none" />
 
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
@@ -16,17 +18,17 @@ export function LoginScreen() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="text-center space-y-10 max-w-sm w-full z-10">
         <div className="space-y-4">
-          <h1 className="text-6xl font-playfair italic tracking-wider bg-clip-text text-transparent bg-gradient-to-br from-pink-200 via-purple-200 to-indigo-200 drop-shadow-sm">
+          <h1 className="text-6xl font-playfair italic tracking-wider bg-clip-text text-transparent bg-gradient-to-br from-rose-600 via-orange-500 to-red-500 drop-shadow-sm">
             Only Us
           </h1>
-          <p className="text-slate-400 font-inter text-sm tracking-[0.2em] uppercase">
+          <p className="text-stone-500 font-inter text-sm tracking-[0.2em] uppercase">
             Your private space
           </p>
         </div>
 
         <button
           onClick={signInWithGoogle}
-          className="w-full py-4 px-6 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 backdrop-blur-md transition-all duration-300 flex items-center justify-center gap-3 font-inter font-medium shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_32px_rgba(255,255,255,0.05)] hover:-translate-y-1">
+          className="w-full py-4 px-6 rounded-2xl bg-white/60 hover:bg-white border border-stone-200 backdrop-blur-md transition-all duration-300 flex items-center justify-center gap-3 font-inter font-medium text-stone-700 shadow-sm hover:shadow-md hover:-translate-y-1">
           {/* Simple Google G icon */}
           <svg
             viewBox="0 0 24 24"
@@ -52,6 +54,67 @@ export function LoginScreen() {
           </svg>
           Sign in with Google
         </button>
+
+        {/* Local Development Shortcut */}
+        {process.env.NODE_ENV === "development" && (
+          <div className="pt-8 mt-8 border-t border-stone-200/50">
+            <p className="text-xs text-stone-400 font-inter uppercase tracking-widest mb-4">
+              Local Dev Testing
+            </p>
+            <form 
+              className="space-y-3"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.currentTarget);
+                const email = (formData.get("email") as string).trim();
+                const password = formData.get("password") as string;
+                const action = (e.nativeEvent as SubmitEvent).submitter?.getAttribute("value");
+
+                if (action === "signup") {
+                  const { error } = await supabase.auth.signUp({ email, password });
+                  if (error) alert("Sign up failed: " + error.message);
+                  else alert("Sign up successful! You can now log in.");
+                } else {
+                  const { error } = await supabase.auth.signInWithPassword({ email, password });
+                  if (error) alert("Login failed: " + error.message);
+                }
+              }}
+            >
+              <input 
+                name="email" 
+                type="email" 
+                placeholder="you+dev@gmail.com" 
+                required
+                className="w-full bg-white/80 border border-stone-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-rose-200 transition-all font-inter"
+                defaultValue="dev@onlyus.local"
+              />
+              <input 
+                name="password" 
+                type="password" 
+                placeholder="Password (min 6 chars)" 
+                required
+                className="w-full bg-white/80 border border-stone-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-rose-200 transition-all font-inter"
+                defaultValue="password123"
+              />
+              <div className="flex gap-2">
+                <button 
+                  type="submit" 
+                  value="login"
+                  className="flex-1 py-2.5 bg-stone-100 hover:bg-stone-200 border border-stone-200 text-stone-700 rounded-xl text-sm font-medium transition-colors"
+                >
+                  Log In
+                </button>
+                <button 
+                  type="submit" 
+                  value="signup"
+                  className="flex-1 py-2.5 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 rounded-xl text-sm font-medium transition-colors"
+                >
+                  Sign Up
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
       </motion.div>
     </div>
   );

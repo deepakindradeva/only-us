@@ -31,8 +31,8 @@ export default function ModeSelector({
               <button
                 key={mode.id}
                 onClick={() => onSelect(mode)}
-                className={`p-3 rounded-full bg-white/5 border border-white/10 transition-all hover:bg-white/10 
-                  ${isActive ? `shadow-[0_0_20px_rgba(255,255,255,0.1)] ring-2 ring-offset-2 ring-offset-[#0a0a0c] ${mode.color.replace("text", "ring")} bg-white/15 scale-110` : "hover:scale-105"}
+                className={`p-3 rounded-full bg-white border border-stone-200 shadow-sm transition-all hover:bg-stone-50 
+                  ${isActive ? `shadow-md ring-2 ring-offset-2 ring-offset-[#FAFAF9] ${mode.color.replace("text", "ring")} bg-stone-50 scale-110` : "hover:scale-105"}
                 `}
                 title={mode.name}>
                 <Icon className={mode.color} size={20} />
